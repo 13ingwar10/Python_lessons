@@ -1,136 +1,115 @@
-print("Задача 1. Напишите программу, которая принимает на вход вещественное число и показывает сумму его цифр.")
-number = str(input("Введите любое вещественное число: "))
+print("Задача 1. Задайте список из нескольких чисел. Напишите программу, которая найдёт сумму элементов списка, стоящих на нечётной позиции.")
 
-number = number.replace('.', '')
-sum = 0
-
-for i in range(len(number)):
-    sum += int(number[i])
-
-print(sum)
-print("\n")
-
-print("Задача 2. Напишите программу, которая принимает на вход число N и выдает набор произведений чисел от 1 до N.")
-number = int(input("Введите число N: "))
-array = []
-array.append(1)
-
-for i in range(1, number):
-    array.append((i+1)*array[i-1])
-print(array)
-
-print("\n")
-
-print("Задача 3. Задайте список из n чисел последовательности (1 + 1/n)**n и выведите на экран их сумму.")
-
-number = int(input("Введите число N: "))
-array = []
-sum = 0
-
-print(f"Для n = {number} сформирована последовательность:", end=" ")
-for i in range(number-1):
-    array.append((1 + 1 / (i+1)) ** (i + 1))
-    print(f"{i+1}: {round(array[i],2)}", end=", ")
-    sum += array[i]
-array.append((1 + 1/number)**number)
-print(f"{number}: {round(array[number-1],2)}")
-sum += array[number-1]
-print(f"Сумма элементов равна {round(sum, 2)}")
-
-print("\n")
-
-print("Задача 4. Задайте список из N элементов, заполненных числами из промежутка [-N, N]. Найдите произведение элементов на указанных позициях. Позиции хранятся в файле file.txt в одной строке одно число.")
-
+size = int(input("Задайте размер массива: ")) # Формируем рандомный список, размер задает пользователь
 import random
-number = int(input("Введите число N: "))
 array = []
 
-for i in range(number): # создаем список длинной N, заполненный числами из промежутка [-N, N]
-    array.append(random.randint(-number, number))
+for i in range(size):
+    array.append(random.randint(0, 99))
 
-print("Был сформирован массив: ", end='')
+print("Сформирован список:")
 print(array)
 
-array_for_write = [] # создаем список из двух случайных неодинаковых чисел, которые буду записаны в файл file.txt как позиции списка array для нахождения произведения
-array_for_write.append(random.randint(0, number-1))
-array_for_write.append(random.randint(0, number-1))
-while (array_for_write[0] == array_for_write[1]):
-    array_for_write[1] = random.randint(0, number-1)
+sum = 0
 
-print("Найдем произведение следующих позиций: ", end= '')
-print(f"{array_for_write[0]+1} и {array_for_write[1]+1}")
+for i in range(1, size, 2): # Пробегаемся по нечетным позиция начиная с 1, значения записываем в sum накопленной суммой
+    sum += array[i]
 
-with open("file.txt", "w+") as new_file: # записываем в отдельный файл позиции элементов списка array для перемножения
-    for i in array_for_write:
-        new_file.write(str(i) + '\n')
-
-product = 0
-with open("file.txt", 'r') as new_file: # достаем из файла file позиции элементов для перемножения, и записываем произведение в переменную product
-    lines = new_file.readlines()
-    product = array[int(lines[0])]*array[int(lines[1])]
-
-print(f"Произведение данных элементов равно {product}")
-
+print(f"Сумма элементов нечетных позиций равна {sum}")
 print("\n")
 
-print("Задача 5. Реализуйте алгоритм перемешивания списка")
+print("Задача 2. Напишите программу, которая найдёт произведение пар чисел списка. Парой считаем первый и последний элемент, второй и предпоследний и т.д.")
 
-number = int(input("Введите размер списка: "))
-
+size = int(input("Задайте размер массива: ")) # Формируем рандомный список, размер задает пользователь
+import random
 array = []
-for i in range(number): # создаем список длинной number, заполненный случайными числами из промежутка [-10, 10]
-    array.append(random.randint(-10, 10))
 
-print("Был такой список: ", end='')
+for i in range(size):
+    array.append(random.randint(0, 10))
+
+print("Сфоромирован список:")
 print(array)
 
+start = 0
+end = size - 1
+result = []
+
+while (start <= end):                           # Перемножаем элементы на позициях start и end, двигая их навстречу друг другу при каждом проходе цикла. 
+    result.append(array[start] * array[end])    # Из полученных произведений формируем список result
+    start += 1
+    end -= 1
+
+print("Выводим произведения крайних элементов:")
+print(result)
+print("\n")
+
+print("Задача 3. Задайте список из вещественных чисел. Напишите программу, которая найдёт разницу между максимальным и минимальным значением дробной части элементов.")
+
+size = int(input("Задайте размер массива: ")) # Формируем рандомный список вещественных чисел. Размер задает пользователь
+import random
+array = []
+
+for i in range(size):
+    array.append(round(0.1 + random.random()*10, 2))
+
+print(array)
+
+max = 0
+min = 0
+
+for i in range(1, size):                 # Проходим по циклу и записываем в переменные max и min наибольшую и наименьшую дробные части элементов списка
+    if (array[max] % 1 < array[i] % 1):
+        max = i
+    elif (array[min] % 1 > array[i] % 1):
+        min = i
+ 
+result = array[max]%1 - array[min]%1     # Записываем в переменную result разницу между дробными частями элементов под индексами max и min
+print (round(result, 2))
+
+print("Задача 4. Напишите программу, которая будет преобразовывать десятичное число в двоичное.")
+
+number = int(input("Введите десятичное число: ")) # Пользователь вводит двоичное число, записываем в number
+array = []
+
+while (number > 0):                               # Фомируем массив из остатков от деления number на 2
+    array.append(number % 2)
+    number = int(number / 2)
+
+start = 0
+end = len(array) - 1
 temp = 0
-position = 0
 
-for i in range(number):
-    temp = array[i]
-    position = random.randint(0, number-1)
-    array[i] = array[position]
-    array[position] = temp
+for i in range(int(len(array) / 2)):              # Поскольку двоичное число собирается "с хвоста", переворачиваем список
+    temp = array[start]
+    array[i] = array[end]
+    array[end] = temp
+    start += 1
+    end -= 1
 
-print("А получился такой: ", end='')
-print(array)
-
+print(*array)                                     # Выводим ответ, печатая список result в распакованном виде
 print("\n")
 
-print("Задача 6. Даны два массива, необходимо вернуть их пересечение")
+print("Задача 5. Задайте число. Составьте список чисел Фибоначчи, в том числе для отрицательных индексов.")
 
-# чтобы было веселее, сформируем массивы рандомно
+number = int(input("Введите количество элементов последовательности Фибоначчи: "))  # Пользователь задает число, до которого строится последовательность Фибоначчи
+array_positiv = [0, 1]           # Создаем вспомогательные списки. array_positiv стремится вправо от нуля, array_negativ стремится влево от нуля, в array_resul запишем ответ
+array_negativ = [0, 1]
+array_result = []
 
-size_first = int(input("Введите размер первого массива: "))
-size_second = int(input("Введите размер второго массива: "))
+for i in range (2, number + 1):  # Для n элементов длинна последовательности Фибоначчи всегда будет равна n + 1, элементы под номерами 0 и 1 заполнены по умолчанию, начинаем со второго
+    array_positiv.append(array_positiv[i - 2] + array_positiv[i - 1])
+    array_negativ.append(array_negativ[i - 2] - array_negativ[i - 1])
 
-array_first = []
-array_second = []
+index = len(array_negativ) - 1                 # Собираем ответ в список array_result, с помощью index будем двигаться по спискам за два цикла
+while (index > 0):
+    array_result.append(array_negativ[index])
+    index -= 1
 
-for i in range(size_first): # заполним два массива случайными числами из промежутка [-10, 10]
-     array_first.append(random.randint(-10, 10))
-for i in range(size_second): 
-     array_second.append(random.randint(-10, 10))
+index = 0
 
-print("Первый массив: ", end='')
-print(array_first)
+while (index < len(array_positiv)):
+    array_result.append(array_positiv[index])
+    index += 1
 
-print("Второй массив: ", end='')
-print(array_second)
-
-array_cross = []
-
-for i in range(size_first): # заполним массив array_cross пересечениями из первых двух массивов
-    for g in range(size_second):
-        if (array_first[i] == array_second[g]):
-            array_cross.append(array_first[i])
-
-array_without_doubles = [] 
-
-for i in range(len(array_cross)): # запишем итоговый массив array_without_doubles, очищенный от дублей
-    if array_cross[i] not in array_without_doubles:
-        array_without_doubles.append(array_cross[i])
-
-print("Получились следующие пересечения: ", end='')
-print(array_without_doubles)
+print(array_result)
+print("\n")
