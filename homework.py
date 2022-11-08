@@ -1,115 +1,95 @@
-print("Задача 1. Задайте список из нескольких чисел. Напишите программу, которая найдёт сумму элементов списка, стоящих на нечётной позиции.")
+print("Задача 1. Вычислить число c заданной точностью d")
 
-size = int(input("Задайте размер массива: ")) # Формируем рандомный список, размер задает пользователь
 import random
-array = []
 
-for i in range(size):
-    array.append(random.randint(0, 99))
+d = 1*10**(-1*random.randint(1, 11))
 
-print("Сформирован список:")
-print(array)
+counter = 0
 
-sum = 0
+while (d < 1):
+    d = d*10
+    counter += 1
 
-for i in range(1, size, 2): # Пробегаемся по нечетным позиция начиная с 1, значения записываем в sum накопленной суммой
-    sum += array[i]
+print(f"Будет сгенерировано число с точность {counter} знаков после запятой")
 
-print(f"Сумма элементов нечетных позиций равна {sum}")
+floor = float(input("Укажите нижню границу:  "))
+top = float(input("Укажите верхнюю границу:  "))
+
+while (top <= floor):
+    top = float(input(f"Ошибка! Укажите верхнюю границу выше {floor}:  "))
+
+number = random.uniform(floor, top)
+print(round(number, counter))
 print("\n")
 
-print("Задача 2. Напишите программу, которая найдёт произведение пар чисел списка. Парой считаем первый и последний элемент, второй и предпоследний и т.д.")
+print("Задача 2. Задайте натуральное число N. Напишите программу, которая составит список простых множителей числа N.")
 
-size = int(input("Задайте размер массива: ")) # Формируем рандомный список, размер задает пользователь
-import random
-array = []
+number = int(input("Введите число: "))
+simple_numbers = [2, 3, 5, 7]
+factors = []
 
-for i in range(size):
-    array.append(random.randint(0, 10))
+print(f"Список простых множителей для числа {number}:")
 
-print("Сфоромирован список:")
-print(array)
+for i in range(len(simple_numbers)-1):
+    while (number%int(simple_numbers[i]) == 0):
+        factors.append(simple_numbers[i])
+        number = number / simple_numbers[i]
+if (number != 1):
+    factors.append(int(number))
 
-start = 0
-end = size - 1
+print(factors)
+print("\n")
+
+print("Задача 3. Задайте последовательность чисел. Напишите программу, которая выведет список неповторяющихся элементов исходной последовательности.")
+
+size = int(input("Введите количество элементов последовательности: "))
+order = []
 result = []
-
-while (start <= end):                           # Перемножаем элементы на позициях start и end, двигая их навстречу друг другу при каждом проходе цикла. 
-    result.append(array[start] * array[end])    # Из полученных произведений формируем список result
-    start += 1
-    end -= 1
-
-print("Выводим произведения крайних элементов:")
-print(result)
-print("\n")
-
-print("Задача 3. Задайте список из вещественных чисел. Напишите программу, которая найдёт разницу между максимальным и минимальным значением дробной части элементов.")
-
-size = int(input("Задайте размер массива: ")) # Формируем рандомный список вещественных чисел. Размер задает пользователь
 import random
-array = []
 
-for i in range(size):
-    array.append(round(0.1 + random.random()*10, 2))
+for i in range(size - 1):
+    order.append(random.randint(1, 10))
+    if (order[i] not in result):
+        result.append(order[i])
+print("Выводим исходный список")
+print(order)
 
-print(array)
+print("Вариант 1) Формируется список, очищенный от дублей")
+print(result)
 
-max = 0
-min = 0
+print("Вариант 2) Формируется список элементов, которые в исходном массиве ни разу не повторяются")
 
-for i in range(1, size):                 # Проходим по циклу и записываем в переменные max и min наибольшую и наименьшую дробные части элементов списка
-    if (array[max] % 1 < array[i] % 1):
-        max = i
-    elif (array[min] % 1 > array[i] % 1):
-        min = i
- 
-result = array[max]%1 - array[min]%1     # Записываем в переменную result разницу между дробными частями элементов под индексами max и min
-print (round(result, 2))
+result = []
+counter = 0
 
-print("Задача 4. Напишите программу, которая будет преобразовывать десятичное число в двоичное.")
+for i in range(size - 1):
+    counter = 0
+    for g in range(size - 1):
+        if (order[i] == order[g]):
+            counter +=1
+    if (counter < 2):
+        result.append(order[i])
 
-number = int(input("Введите десятичное число: ")) # Пользователь вводит двоичное число, записываем в number
-array = []
+print(result) 
 
-while (number > 0):                               # Фомируем массив из остатков от деления number на 2
-    array.append(number % 2)
-    number = int(number / 2)
+print("Задача 4. Задана натуральная степень k. Сформировать случайным образом список коэффициентов (значения от 0 до 100) многочлена и записать в файл многочлен степени k.")
 
-start = 0
-end = len(array) - 1
-temp = 0
+k = int(input("Введите степень k (не больше 10): "))
 
-for i in range(int(len(array) / 2)):              # Поскольку двоичное число собирается "с хвоста", переворачиваем список
-    temp = array[start]
-    array[i] = array[end]
-    array[end] = temp
-    start += 1
-    end -= 1
+while (k < 0 or k > 10):
+    k = int(input("Ошибка! Введите число от 0 до 10 (включительно): "))
 
-print(*array)                                     # Выводим ответ, печатая список result в распакованном виде
-print("\n")
+coefficients = []
 
-print("Задача 5. Задайте число. Составьте список чисел Фибоначчи, в том числе для отрицательных индексов.")
+import random
 
-number = int(input("Введите количество элементов последовательности Фибоначчи: "))  # Пользователь задает число, до которого строится последовательность Фибоначчи
-array_positiv = [0, 1]           # Создаем вспомогательные списки. array_positiv стремится вправо от нуля, array_negativ стремится влево от нуля, в array_resul запишем ответ
-array_negativ = [0, 1]
-array_result = []
+for i in range(k+1):
+    coefficients.append(random.randint(1, 100))
 
-for i in range (2, number + 1):  # Для n элементов длинна последовательности Фибоначчи всегда будет равна n + 1, элементы под номерами 0 и 1 заполнены по умолчанию, начинаем со второго
-    array_positiv.append(array_positiv[i - 2] + array_positiv[i - 1])
-    array_negativ.append(array_negativ[i - 2] - array_negativ[i - 1])
+print("Сформирован список коэффициентов")
+print(coefficients)
 
-index = len(array_negativ) - 1                 # Собираем ответ в список array_result, с помощью index будем двигаться по спискам за два цикла
-while (index > 0):
-    array_result.append(array_negativ[index])
-    index -= 1
-
-index = 0
-
-while (index < len(array_positiv)):
-    array_result.append(array_positiv[index])
-    index += 1
-
-print(array_result)
-print("\n")
+with open("file.txt", "w") as file:
+    for i in range(k, 0, -1):
+        file.write(str(coefficients[k - i]) + "x^" + str(k - (k - i)) + " + ")
+    file.write(str(coefficients[k]))
