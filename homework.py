@@ -1,16 +1,12 @@
-# print("Задача 1. Напишите программу, удаляющую из текста все слова, содержащие 'абв'")
+print("Задача 1. Напишите программу, удаляющую из текста все слова, содержащие 'абв'")
 
-# text_start = input("Введите строку: ")
-# text_start = text_start.split()
+text_start = input("Введите строку: ")
+text_start = text_start.split()
 
-# text_end = []
+text_end = [i for i in text_start if 'абв' not in i]
 
-# for i in text_start:
-#     if ('абв' not in i):
-#         text_end.append(i)
-
-# print(*text_end)
-# print("\n")
+print(*text_end)
+print("\n")
 
 print("Задача 2. Реализуйте RLE алгоритм: реализуйте модуль сжатия и восстановления данных.")
 
