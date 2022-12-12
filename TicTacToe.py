@@ -1,85 +1,91 @@
 import random
 
-def PlayTheGame():
-    deck =  list(range(1, 10))
-    print("Определим право первого хода! Вы по очереди будете пытаться угадать число на шестигранном кубике, победитель ходит первым")
-    player = FirstMove()
-    token = "X"
-    game_over = False
+class TicTacToeBoard:
+
+    def __init__(self):
+        self.field =  list(range(1, 10))
+        self.player = 1
+        self.token = ''
+        self.game_over = False
+
+    def new_game(self):
+
+        print("Добро пожаловать в игру!")
+        print("Определим право первого хода! Вы по очереди будете пытаться угадать число на шестигранном кубике, победитель ходит первым")
+        self.first_move()
+        self.token = 'X'
+        self.game_over = False
+
+        while (self.game_over == False):
+            self.field = self.PlayerMove()
+            self.game_over = self.check_field()
+
+            if self.player == 1:
+                self.player = 2
+            else: self.player = 1
+
+            if self.token == "X":
+                self.token = "O"
+            else: self.token = "X"
 
 
-    while (game_over == False):
-        deck = PlayerMove(deck, player, token)
-        game_over = CheckWin(deck, player, token, game_over)
+    def get_field(self):
+        for i in range(0, 3):
+            print(self.field[0 + i*3], "|" ,self.field[1 + i*3], "|" , self.field[2 + i*3])
 
-        if player == 1:
-            player = 2
-        else: player = 1
+    def first_move(self):
+        self.player = 1
+        number = 1
+        dice = 0
 
-        if token == "X":
-            token = "O"
-        else: token = "X"
+        while (number != dice):
+            number = int(input("Введите число от 1 до 6: "))
+            while (number < 1 or number > 6):
+                number = int(input("Ошибка! Введите число от 1 до 6: "))
+            dice = random.randint(1, 6)
 
-def PrintDeck(deck):
-    for i in range(0, 3):
-        print(deck[0 + i*3], "|" ,deck[1 + i*3], "|" , deck[2 + i*3])
+            if (number == dice):
+                    print(f"Вы угадали! Игрок №{self.player} ходит первым!")
+            elif self.player == 1:
+                self.player = 2
+            else:
+                self.player = 1
 
-def FirstMove():
-    player = 1
-    number = 1
-    dice = 0
+        return self.player
 
-    while (number != dice):
-        number = int(input("Введите число от 1 до 6 "))
-        while (number < 1 or number > 6):
-            number = int(input("Ошибка! Введите число от 1 до 6"))
-        dice = random.randint(1, 6)
+    def check_field(self):
 
-        if (number == dice):
-                print(f"Вы угадали! Игрок №{player} ходит первым!")
-        elif player == 1:
-            player = 2
-        else:
-            player = 1
+        for i in range(0, 9, 3):
+            if self.field[i] == self.field[i+1] == self.field[i+2] == self.token:
+                print(f"Игрок №{self.player} выиграл!")
+                self.game_over = True
 
-    return player
+        for i in range(3):
+            if self.field[i] == self.field[i+3] == self.field[i+6] == self.token:
+                print(f"Игрок №{self.player} выиграл!")
+                self.game_over = True
 
-def PlayerMove(deck, player, token):
+        if (self.field[0] == self.field[4] == self.field[8] == self.token):
+                print(f"Игрок №{self.player} выиграл!")
+                self.game_over = True
+
+        if (self.field[2] == self.field[4] == self.field[6] == self.token):
+                print(f"Игрок №{self.player} выиграл!")
+                self.game_over = True
+        
+        return self.game_over
+
+    def PlayerMove(self):
     
-    PrintDeck(deck)
+        self.get_field()
 
-    move = input(f"Ход игрока {player}. На какое поле вы хотите поставить " + token + "?  ")
+        move = input(f"Ход игрока {self.player}. На какое поле вы хотите поставить " + self.token + "?  ")
 
-    while(int(move) < 1 or int(move) > 9 or str(deck[int(move) - 1]) in "XO"):
-        move = input("Ошибка! введите число от 1 до 9 в незанятое поле ")
+        while(int(move) < 1 or int(move) > 9 or str(self.field[int(move) - 1]) in "XO"):
+            move = input("Ошибка! введите число от 1 до 9 в незанятое поле ")
 
-    deck[int(move) - 1] = token
-    return deck
-    
+        self.field[int(move) - 1] = self.token
+        return self.field
 
-def CheckWin(deck, player, token, game_over):
-
-    game_over = False
-
-    for i in range(0, 9, 3):
-        if deck[i] == deck[i+1] == deck[i+2] == token:
-            print(f"Игрок №{player} выиграл!")
-            game_over = True
-
-    for i in range(3):
-        if deck[i] == deck[i+3] == deck[i+6] == token:
-            print(f"Игрок №{player} выиграл!")
-            game_over = True
-
-    if (deck[0] == deck[4] == deck[8] == token):
-            print(f"Игрок №{player} выиграл!")
-            game_over = True
-
-    if (deck[2] == deck[4] == deck[6] == token):
-            print(f"Игрок №{player} выиграл!")
-            game_over = True
-    
-    return game_over
-
-
-PlayTheGame()
+board = TicTacToeBoard()
+board.new_game()
